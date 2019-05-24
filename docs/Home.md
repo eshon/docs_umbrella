@@ -34,9 +34,11 @@ If there are PRs to files in `metarepo/docs` then either manually merge on Wiki 
 4. cd to `metarepo/<submodule>` and do `git checkout -b wiki_changes` 
 (or if the branch already exists switch to it and do `git pull origin master`)
 
-5. copy any changes from `metarepo/docs` to  `metarepo/<submodule>` and commit
+5. copy any changes from `metarepo/docs` to  `metarepo/<submodule>` and commit in wiki_changes branch
 
-6. Just in case do a `git submodule update --remote --rebase` from `metarepo`
+6. `git checkout master`
+
+6. (Just in case do a `git submodule update --remote --rebase` from `metarepo`)
 
 7. Fix any conflicts
 
