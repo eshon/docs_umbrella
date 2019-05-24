@@ -23,6 +23,8 @@ If there are Edits on the Wiki then in `metarepo/<submodule>`:
 
 If there are PRs to files in `metarepo/docs` then either manually merge on Wiki OR:
 
+0. `git pull origin master` from `metarepo`
+
 1. Do `git submodule update --remote --merge` from `metarepo`
 
 2. cp .md files from `metarepo/<submodule>` to `metarepo/docs`
