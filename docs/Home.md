@@ -27,11 +27,11 @@ If there are PRs to files in `metarepo/docs` then either manually merge on Wiki 
 
 1. Do `git submodule update --remote --merge` from `metarepo`
 
-2. cp .md files from `metarepo/<submodule>` to `metarepo/docs`
+2. if there were Wiki udpates cp .md files from `metarepo/<submodule>` to `metarepo/docs`
 
 3. human: manually review PR to `metarepo/docs` if accepted then:
 
-4. copy changes from `metarepo/docs` to  `metarepo/<submodule>` 
+4. copy any changes from `metarepo/docs` to  `metarepo/<submodule>` 
 
 5. Just in case do a `git submodule update --remote --rebase` from `metarepo`
 
