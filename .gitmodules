@@ -1,0 +1,3 @@
+[submodule "testwikidocs"]
+	path = testwikidocs
+	url = git@github.com:eshon/testwikidocs_sync.wiki.git
