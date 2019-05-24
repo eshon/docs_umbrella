@@ -32,7 +32,7 @@ If there are PRs to files in `metarepo/docs` then either manually merge on Wiki 
 3. human: manually review PR to `metarepo/docs` if accepted then:
 
 4. cd to `metarepo/<submodule>` and do `git checkout -b wiki_changes` 
-(or if the branch already exists switch to it and do `git pull origin master`
+(or if the branch already exists switch to it and do `git pull origin master`)
 
 5. copy any changes from `metarepo/docs` to  `metarepo/<submodule>` and commit
 
