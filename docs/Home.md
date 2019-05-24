@@ -29,7 +29,7 @@ If there are PRs to files in `metarepo/docs` then either manually merge on Wiki 
 
 2. cp .md files from `metarepo/<submodule>` to `metarepo/docs`
 
-3. manually review PR to `metarepo/docs` if accepted then:
+3. human: manually review PR to `metarepo/docs` if accepted then:
 
 4. copy changes from `metarepo/docs` to  `metarepo/<submodule>` 
 
