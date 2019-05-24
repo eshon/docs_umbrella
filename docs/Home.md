@@ -42,3 +42,5 @@ If there are PRs to files in `metarepo/docs` then either manually merge on Wiki 
 8. `git push origin master` from `metarepo/<submodule>`
 
 9. (human: verify Wiki is udpated)
+
+Does this work?
