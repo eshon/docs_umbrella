@@ -37,6 +37,8 @@ If there are PRs to files in `metarepo/docs` then either manually merge on Wiki 
 
 6. Fix any conflicts
 
-7. `git push --recurse-submodules=check` from `metarepo`
+7. git commit updates
 
-8. (human: verify Wiki is udpated)
+8. `git push --recurse-submodules=check` from `metarepo`
+
+9. (human: verify Wiki is udpated)
