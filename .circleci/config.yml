@@ -19,8 +19,8 @@ jobs:
           name: 'Update the submodule'
           command: 'git submodule update --init --recursive'
       - run:
-          name: Copy wiki over to docs
-          command: 'rsync -rv --exclude=.git testwikidocs docs'
+          name: Copy wiki over to docs and don't include .git file
+          command: 'find testwikidocs -not -iname '.git' -mindepth 1 -exec cp -Rv --parents {} docs/ ';''
       - run:
           name: Show contents of docs
           command: 'ls -la docs'
