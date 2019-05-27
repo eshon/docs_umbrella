@@ -13,5 +13,8 @@ jobs:
           command: 'sudo npm install -g npm@latest'
       - run:
           name: Install docsify
-          command: 'npm i docsify-cli -g'
+          command: 'sudo npm i docsify-cli -g'
       - checkout
+      - run:
+          name: Copy wiki over to docs
+          command: 'cp -R testwikidocs_sync/*.md docs/'
