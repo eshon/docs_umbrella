@@ -10,7 +10,7 @@ Now trying an update from the umbrella repo
 
 Now trying a fork and PR
 
-![possum](images/possum.jpg "Possum")
+[[images/possum.jpg | alt=possum]]
 
 
 ------------
