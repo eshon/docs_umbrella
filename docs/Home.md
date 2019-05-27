@@ -1,4 +1,4 @@
-Welcome to the testwikidocs_sync wiki!
+Welcome to the testwikidocs_sync wiki!  🐱 🐶 🐭 🐹 🐰 
 
 This is a test page.
 
@@ -10,13 +10,16 @@ Now trying an update from the umbrella repo
 
 Now trying a fork and PR
 
+[[https://github.com/eshon/testwikidocs_sync/wiki/images/possum.jpg|alt=possum]]
+
+
 ------------
 
 Ok it works so workflow with a `metarepo/docs` copied from `metarepo/<submodule>` folder seems to be:
 
 If there are Edits on the Wiki then in `metarepo/<submodule>`:
 
-1. `git submodule update --remote --merge` from `metarepo`
+1. `git pull origin master` from `metarepo/<submodule>`
 
 2. cp .md files in `metarepo/<submodule>` to `metarepo/docs` to update live docs website
 
