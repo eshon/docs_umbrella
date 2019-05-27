@@ -5,7 +5,7 @@ executors:
       - image: circleci/node:stretch 
 
 jobs:
-  build_docs:
+  build:
     executor: node-executor
     steps:
       - run:
@@ -15,6 +15,3 @@ jobs:
           name: Install docsify
           command: 'npm i docsify-cli -g'
       - checkout
-
-
-      
