@@ -5,6 +5,9 @@ jobs:
       - image: circleci/node:stretch 
     steps:
       - run:
+          name: Install rsync
+          command: 'sudo apt-get update && sudo apt-get -y install rsync'
+      - run:
           name: Update npm
           command: 'sudo npm install -g npm@latest'
       - run:
@@ -15,8 +18,11 @@ jobs:
           name: 'Update the submodule'
           command: 'git submodule update --init --recursive --remote'
       - run:
-          name: Copy wiki over to docs
-          command: 'cp -Rv testwikidocs/* docs/'
+          name: Copy wiki over to docs - exclude images and .git file
+          command: 'rsync -av --progress testwikidocs docs --exclude images --exclude "*.git"'
+      - run:
+          name: Copy wiki's images folder to docs/_images
+          command: 'rsync -av --progress testwikidocs/images docs/_images'
       - run:
           name: Show contents of docs
           command: 'ls -la docs'
