@@ -15,8 +15,6 @@ jobs:
           name: Install docsify
           command: 'npm i docsify-cli -g'
       - checkout
-      - run:
-        - name: Copy over wiki docs
-        - command: cp -R testwikidocs_sync/ docs/
+
 
       
