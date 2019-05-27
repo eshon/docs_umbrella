@@ -22,4 +22,4 @@ jobs:
           command: 'ls -la docs'
       - run:
           name: commit new changes
-          command: 'bash automated_build.sh'
+          command: 'bash .circleci/automated_build.sh'
