@@ -28,8 +28,8 @@ jobs:
           command: 'git add ./docs'
       - run:
           name: commit files
-          command: 'git commit --allow-empty -m "Automated Rebuild"'
+          command: 'git commit --allow-empty -m "Pushing from CI"'
       - run:
-          name: push files quietly
+          name: push files quietly to avoid showing token in logs
           command: 'git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/docs_umbrella.git master'
                     
