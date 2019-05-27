@@ -30,8 +30,8 @@ jobs:
           name: config user name
           command: 'git config user.name ${GH_NAME}'
       - run:
-          name: add new files in /docs directory
-          command: 'git add ./docs'
+          name: add new files in docs/ directory
+          command: 'git add docs'
       - run:
           name: commit files
           command: 'git commit --allow-empty -m "Pushing from CI"'
