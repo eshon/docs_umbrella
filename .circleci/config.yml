@@ -21,5 +21,18 @@ jobs:
           name: Show contents of docs
           command: 'ls -la docs'
       - run:
-          name: commit new changes
-          command: 'bash .circleci/automated_build.sh'
+          name: config user email
+          command: 'git config --global user.email "eva@protocol.ai"'
+      - run:
+          name: config user name
+          command: 'git config --global user.name "eshon"'
+      - run:
+          name: add new files
+          command: 'git add .'
+      - run:
+          name: commit files
+          command: 'git commit -m "Automated Rebuild"'
+      - run:
+          name: commit files
+          command: 'git push -f origin master'
+          
