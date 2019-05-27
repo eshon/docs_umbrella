@@ -13,8 +13,60 @@
   <script src="//unpkg.com/docsify-edit-on-github/index.js"></script>
   <script>
     window.$docsify = {
-      name: '',
-      repo: '',
+      name: 'Docs Umbrella',
+      repo: 'https://github.com/eshon/docs_umbrella',
+      markdown: {
+        gfm: true,
+        tables: true,
+        renderer: {
+          paragraph: function(text) {
+
+            // Custom renderer for Github Wiki images markup:
+            // [[images/possum.jpg | alt=possum]]
+
+            if (text.startsWith('[[') && text.endsWith(']]')) {
+              // remove brackets
+              var src_str = text.substring(2, text.indexOf("]]"));
+              // remove all whitespace
+              src_str = src_str.replace(/\s/g,'');
+
+              // start building src url with or without alt val
+              var src_url, img_tag,
+                alt_start = src_str.indexOf("|alt=");
+
+              // replace 'images' with '_images'
+              function replace_imgdir (src_dir) {
+                  if (src_dir.indexOf('_images') < 0) {
+                    return src_dir.replace('images', '_images');
+                  }
+              }
+
+              if (alt_start > -1) {
+                src_url = src_str.substring(0, alt_start);
+                alt_text = src_str.substring(alt_start+5);
+
+                src_url = replace_imgdir(src_url);
+
+                img_tag = '<img src="' + src_url + '"';
+                img_tag += ' alt="' + alt_text + '"';
+
+              } else {
+
+                src_url = replace_imgdir(src_str);
+
+                img_tag = '<img src="' + src_url + '"';
+              }
+              img_tag += this.options.xhtml ? '/>' : '>';
+
+              return img_tag;
+
+            } else {
+              // normal paragraph rendering
+              return '<p>' + text + '</p>';
+            }
+          }
+        }
+      },
       homepage: 'Home.md',
       loadSidebar: true,
       plugins: [
