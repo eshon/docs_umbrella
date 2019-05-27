@@ -24,18 +24,12 @@ jobs:
           name: config user email
           command: 'git config credential.helper "cache --timeout=120"'
       - run:
-          name: config user email
-          command: 'git config --global user.email "eva@protocol.ai"'
-      - run:
-          name: config user name
-          command: 'git config --global user.name "eshon"'
-      - run:
           name: add new files in /docs directory
           command: 'git add ./docs'
       - run:
           name: commit files
-          command: 'git commit -m "Automated Rebuild"'
+          command: 'git commit --allow-empty -m "Automated Rebuild"'
       - run:
-          name: commit files
-          command: 'git push -f origin master'
-          
+          name: push files quietly
+          command: 'git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/docs_umbrella.git master'
+                    
