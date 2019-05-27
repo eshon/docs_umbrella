@@ -17,6 +17,6 @@ jobs:
       - checkout
       - run:
         - name: copy over wiki docs
-        - command: cp testwikidocs_sync/* docs/
+        - command: cp testwikidocs_sync/*.md docs/
 
       
