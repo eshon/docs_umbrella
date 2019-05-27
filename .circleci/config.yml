@@ -17,4 +17,5 @@ jobs:
       - checkout
       - run:
           name: Copy wiki over to docs
-          command: 'cp -R testwikidocs_sync/*.md docs/'
+          command: 'git submodule update'
+          command: 'ls -la testwikidocs'
