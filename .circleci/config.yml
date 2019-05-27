@@ -3,6 +3,10 @@ jobs:
   build:
     docker:
       - image: circleci/node:stretch 
+    # On Github Webhook for Wiki updates from eshon/testwikisync_doc repo, trigger a 
+    # git submodule update in this repo, copy files to docs/ folder and push to this repo
+    # so eshon.github.io/docs_umbrella Docsify can be rebuilt
+    # TODO - Edits from this repo trigger copy to testwikidocs/ repo and push back to eshon/testwikisync_doc 
     steps:
       - run:
           name: Install rsync
