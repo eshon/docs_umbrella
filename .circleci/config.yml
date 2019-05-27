@@ -16,6 +16,8 @@ jobs:
           command: 'sudo npm i docsify-cli -g'
       - checkout
       - run:
-          name: Copy wiki over to docs
+          name: 'Update the submodule'
           command: 'git submodule update'
+      - run:
+          name: Copy wiki over to docs
           command: 'ls -la testwikidocs'
