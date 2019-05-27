@@ -1,12 +1,8 @@
-version: 2.1
-executors:
-  node-executor:
-    docker:
-      - image: circleci/node:stretch 
-
+version: 2
 jobs:
   build:
-    executor: node-executor
+    docker:
+      - image: circleci/node:stretch 
     steps:
       - run:
           name: Update npm
@@ -17,7 +13,13 @@ jobs:
       - checkout
       - run:
           name: 'Update the submodule'
-          command: 'git submodule update --init --recursive'
+          command: 'git submodule update --init --recursive --remote'
       - run:
           name: Copy wiki over to docs
+          command: 'cp -Rv testwikidocs/* docs/'
+      - run:
+          name: Show contents of docs
+          command: 'ls -la docs'
+      - run:
+          name: Show contents of testwikidocs
           command: 'ls -la testwikidocs'
