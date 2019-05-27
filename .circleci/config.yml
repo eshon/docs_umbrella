@@ -1,12 +1,8 @@
-version: 2.1
-executors:
-  node-executor:
-    docker:
-      - image: circleci/node:stretch 
-
+version: 2
 jobs:
   build:
-    executor: node-executor
+    docker:
+      - image: circleci/node:stretch 
     steps:
       - run:
           name: Update npm
