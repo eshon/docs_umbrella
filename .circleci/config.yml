@@ -15,7 +15,7 @@ jobs:
           name: 'Update the submodule'
           command: 'git submodule update --init --recursive --remote'
       - run:
-          name: Copy wiki over to docs and don't include .git file
+          name: Copy wiki over to docs
           command: 'cp -Rv testwikidocs/* docs/'
       - run:
           name: Show contents of docs
