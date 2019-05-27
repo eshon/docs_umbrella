@@ -21,8 +21,14 @@ jobs:
           name: Show contents of docs
           command: 'ls -la docs'
       - run:
-          name: config user email
+          name: config credential helper
           command: 'git config credential.helper "cache --timeout=120"'
+      - run:
+          name: config user email
+          command: 'git config user.email ${GH_EMAIL}'
+      - run:
+          name: config user name
+          command: 'git config user.name ${GH_NAME}'
       - run:
           name: add new files in /docs directory
           command: 'git add ./docs'
