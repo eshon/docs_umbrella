@@ -1,8 +1,22 @@
 version: 2.1
+executors:
+  node-executor:
+    docker:
+      - image: circleci/node:stretch 
+
 jobs:
-  build:
-    docker: # use the docker executor type; machine and macos executors are also supported
-      - image: circleci/node:stretch # the primary container, where your job's commands are run
+  build_docs:
+    executor: node-executor
     steps:
-      - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
+      - run:
+          name: Update npm
+          command: 'sudo npm install -g npm@latest'
+      - run:
+          name: Install docsify
+          command: 'npm i docsify-cli -g'
+      - checkout
+      - run:
+        - name: copy over wiki docs
+        - command: cp testwikidocs_sync/* docs/
+
+      
