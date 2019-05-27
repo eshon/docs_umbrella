@@ -16,7 +16,7 @@ jobs:
           command: 'npm i docsify-cli -g'
       - checkout
       - run:
-        - name: copy over wiki docs
-        - command: cp testwikidocs_sync/*.md docs/
+        - name: Copy over wiki docs
+        - command: cp -R testwikidocs_sync/ docs/
 
       
