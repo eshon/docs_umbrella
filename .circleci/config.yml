@@ -17,7 +17,7 @@ jobs:
       - checkout
       - run:
           name: 'Update the submodule'
-          command: 'git submodule update'
+          command: 'git submodule update --init --recursive'
       - run:
           name: Copy wiki over to docs
           command: 'ls -la testwikidocs'
