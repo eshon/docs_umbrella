@@ -4,8 +4,10 @@ jobs:
     docker:
       - image: circleci/node:latest 
     # Triggers: Updates to this repo will trigger this CI script and any edits to the
-    # Github Wiki in the eshon/testwikisync_doc repo will trigger this via Github webhook.
-    # Github Wiki Markdown files and image files (but not folder names) in submodule and docs should be identical
+    # Github Wiki in eshon/testwikisync_doc will trigger via Github webhook.
+    # Notes:
+    #  Github Wiki Markdown files and image files (but not folder names) in submodule and this repo should be identical
+    #  Assumes ${GH_EMAIL}, ${GH_NAME}, ${DOCS_GH_TOKEN} are set in CI environment
     #
     # Also see https://github.com/eshon/docs_umbrella/blob/master/docs/index.html for custom Docsify renderer
     # for Github Wiki markdown for images
