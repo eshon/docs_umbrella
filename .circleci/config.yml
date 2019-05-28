@@ -70,7 +70,7 @@ jobs:
                 git commit -m "Pushing from Docs repo to Wiki via CI [skip ci]"
                 git checkout master
                 git merge wiki_changes
-                git fetch
+                git fetch origin master
                 git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/testwikidocs_sync.git master
             fi
             if [ "${DIFFTAG}" -eq "0" ]
