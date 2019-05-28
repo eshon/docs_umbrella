@@ -59,7 +59,7 @@ jobs:
       - run:
           name: diff docs and submodule, if there are differences need to push to Wiki...
           command: |
-            export DIFFTAG=$(eval diff -r -x '.*' -x '*.html' -x 'images' -x '_images' -x '_*.md' docs/ testwikidocs/ | wc -l)
+            export DIFFTAG=$(diff -r -x '.*' -x '*.html' -x 'images' -x '_images' -x '_*.md' docs/ testwikidocs/ | wc -l)
             echo $DIFFTAG
 
                     
