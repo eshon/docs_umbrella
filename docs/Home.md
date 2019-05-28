@@ -8,7 +8,7 @@ Test
 
 Now trying an update from the umbrella repo
 
-Now trying a fork and PRssss
+Now trying a fork and PR
 
 [[images/possum.jpg | alt=possum]]
 
