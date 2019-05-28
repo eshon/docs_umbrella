@@ -36,33 +36,37 @@ jobs:
       - run:
           name: Get timestamps of this repo and submodule, check for diffs, commit new to older
           command: |
+            export REPO=docs_umbrella
+            export DOCS_DIR=docs
+            export SUBMODULE_DIR=testwikidocs
+            export SUBMODULE=testwikidocs_sync
             export DOCS_COMMIT_TIME=$(git show -s --format=%ct)
-            export WIKI_COMMIT_TIME=$(git --git-dir testwikidocs/.git show -s --format=%ct)
-            export DIFFTAG=$(diff -r -x '.*' -x '*.html' -x 'images' -x '_images' -x '_*.md' docs/ testwikidocs/ | wc -l)
+            export WIKI_COMMIT_TIME=$(git --git-dir ${SUBMODULE_DIR}/.git show -s --format=%ct)
+            export DIFFTAG=$(diff -r -x '.*' -x '*.html' -x 'images' -x '_images' -x '_*.md' ${DOCS_DIR}/ ${SUBMODULE_DIR}/ | wc -l)
             echo $WIKI_COMMIT_TIME
             echo $DOCS_COMMIT_TIME
             echo $DIFFTAG
             if [ "${WIKI_COMMIT_TIME}" -gt "${DOCS_COMMIT_TIME}" ] && [ "${DIFFTAG}" -ne "0" ]
             then
                 echo 'Wiki is newer so if different then copy to and update Docs'
-                rsync -av --progress --exclude images --exclude "*.git" testwikidocs/* docs/
-                rsync -av --progress testwikidocs/images/* docs/_images/
-                ls -la docs
-                git add docs
+                rsync -av --progress --exclude images --exclude "*.git" ${SUBMODULE_DIR}/* ${REPO_DIR}/
+                rsync -av --progress ${SUBMODULE_DIR}/images/* ${DOCS_DIR}/_images/
+                ls -la ${DOCS_DIR}
+                git add ${DOCS_DIR}
                 git commit --allow-empty -m "Pushing from Wiki webhook via CI [skip ci]"
                 git pull origin ${CIRCLE_BRANCH}
-                git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/docs_umbrella.git ${CIRCLE_BRANCH}
+                git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/${REPO}.git ${CIRCLE_BRANCH}
                 echo "Pushed Wiki updates to Docs site!"
             fi
             if [ "${DOCS_COMMIT_TIME}" -gt "${WIKI_COMMIT_TIME}" ] && [ "${DIFFTAG}" -ne "0" ]
             then
                 echo 'Docs is newer so if different then copy to and update Wiki'
-                cd testwikidocs
+                cd ${SUBMODULE_DIR}
                 git remote -v
                 git pull origin ${CIRCLE_BRANCH}
                 git checkout -b wiki_changes
-                rsync -av --progress --exclude _images --exclude '*.git' --exclude '*.nojekyll' --exclude '*.html' --exclude '_*.md' ../docs/* .
-                rsync -av --progress ../docs/_images/* images/
+                rsync -av --progress --exclude _images --exclude '*.git' --exclude '*.nojekyll' --exclude '*.html' --exclude '_*.md' ../${DOCS_DIR}/* .
+                rsync -av --progress ../${DOCS_DIR}/_images/* images/
                 ls -la .
                 git add .
                 git status
@@ -70,7 +74,7 @@ jobs:
                 git fetch
                 git checkout ${CIRCLE_BRANCH}
                 git merge wiki_changes
-                git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/testwikidocs_sync.wiki.git ${CIRCLE_BRANCH}
+                git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/${SUBMODULE}.wiki.git ${CIRCLE_BRANCH}
                 echo "Pushed Doc site updates to Wiki!"
             fi
             if [ "${DIFFTAG}" -eq "0" ]
