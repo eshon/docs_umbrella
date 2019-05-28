@@ -66,8 +66,8 @@ jobs:
               cd testwikidocs
               git pull origin master
               git checkout -b wiki_changes
-              rsync -av --progress ../docs . --exclude _images --exclude '*.git' --exclude '*.nojekyll' --exclude '*.html' --exclude '_*.md'
-              rsync -av --progress../docs/_images/* images/
+              rsync -av --progress --exclude _images --exclude '*.git' --exclude '*.nojekyll' --exclude '*.html' --exclude '_*.md' ../docs .
+              rsync -av --progress ../docs/_images/* images/
               git add .
               git commit -m "Pushing from Docs repo to Wiki via CI"
               git checkout master
