@@ -12,6 +12,8 @@ Now trying a fork and PR
 
 [[images/possum.jpg | alt=possum]]
 
+![possum](images/possum.jpg "Possum")
+
 
 ------------
 
