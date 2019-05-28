@@ -10,6 +10,7 @@ jobs:
     # Also see https://github.com/eshon/docs_umbrella/blob/master/docs/index.html for custom Docsify renderer
     # for Github Wiki markdown for images
     #
+    working_directory: ~/docsrepo
     steps:
       - run:
           name: Install rsync
@@ -22,7 +23,7 @@ jobs:
           command: 'sudo npm i docsify-cli -g'
       - checkout
       - run:
-          name: 'Sync the submodule'
+          name: 'Sync and update the git submodule'
           command: 'git submodule sync && git submodule update --init'
       - run:
           name: config global git credential helper
