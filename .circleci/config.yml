@@ -51,7 +51,7 @@ jobs:
                 echo 'Wiki is newer so if different then copy to and update Docs'
                 git pull origin ${CIRCLE_BRANCH}
                 git checkout -b doc_changes
-                rsync -av --progress --exclude images --exclude "*.git" ${SUBMODULE_DIR}/* ${REPO_DIR}/
+                rsync -av --progress --exclude images --exclude "*.git" ${SUBMODULE_DIR}/* ${DOCS_DIR}/
                 rsync -av --progress ${SUBMODULE_DIR}/images/* ${DOCS_DIR}/_images/
                 ls -la ${DOCS_DIR}
                 git add ${DOCS_DIR}
