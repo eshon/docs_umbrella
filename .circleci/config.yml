@@ -61,7 +61,8 @@ jobs:
           command: |
             export DIFFTAG=$(diff -r -x '.*' -x '*.html' -x 'images' -x '_images' -x '_*.md' docs/ testwikidocs/ | wc -l)
             echo $DIFFTAG
-            if [ "${DIFFTAG}" != 0 ]; then
+            if [ "${DIFFTAG}" -ne "0" ]; then
               echo "Need to update Wiki"
+            fi
 
                     
