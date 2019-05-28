@@ -49,7 +49,7 @@ jobs:
           command: 'git add docs'
       - run:
           name: commit files
-          command: 'git commit --allow-empty -m "Pushing from Wiki webhook CI"'
+          command: 'git commit --allow-empty -m "Pushing from Wiki webhook via CI"'
       - run:
           name: Update docs
           command: 'git pull origin master'
@@ -63,6 +63,16 @@ jobs:
             echo $DIFFTAG
             if [ "${DIFFTAG}" -ne "0" ]; then
               echo "Need to update Wiki"
+              cd testwikidocs
+              git pull origin master
+              git checkout -b wiki_changes
+              cp ../docs/*.md .
+              cp -r ../docs/_images/* images/
+              git add .
+              git commit -m "Pushing from Docs repo to Wiki via CI"
+              git checkout master
+              git merge wiki_changes
+              git push origin master
             fi
 
                     
