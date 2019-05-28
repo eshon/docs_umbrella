@@ -26,6 +26,13 @@ jobs:
       - run:
           name: 'Update the submodule'
           command: 'git submodule update --init --recursive --remote'
+       - run:
+          name: show all available variables
+          command: |
+            echo $CIRCLE_SHA1
+            echo $CIRCLE_COMPARE_URL
+            echo $CIRCLE_BUILD_URL
+            echo $CIRCLE_BUILD_NUM
       - run:
           name: Copy wiki over to docs - exclude images and .git file
           command: 'rsync -av --progress --exclude images --exclude "*.git" testwikidocs/* docs/'
