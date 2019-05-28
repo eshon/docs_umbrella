@@ -27,12 +27,12 @@ jobs:
       - run:
           name: Get timestamps of this repo and submodule
           command: |
-            export DOCS_COMMIT_TIME=$(git show -s --format=%ct --git-dir .git)
-            export WIKI_COMMIT_TIME=$(git show -s --format=%ct --git-dir testwikidocs/.git)
+            export DOCS_COMMIT_TIME=$(git show -s --format=%ct)
+            export WIKI_COMMIT_TIME=$(git --git-dir testwikidocs/.git show -s --format=%ct)
             echo $WIKI_COMMIT_TIME
             echo $DOCS_COMMIT_TIME
-            [ $DOCS_COMMIT_TIME -gt $WIKI_COMMIT_TIME ] && echo "Docs is newer"
-            [ $WIKI_COMMIT_TIME -gt $DOCS_COMMIT_TIME ] && echo "Wiki is newer"
+            [ $DOCS_COMMIT_TIME -gt $WIKI_COMMIT_TIME ] && echo "Docs is newerrrrrr"
+            [ $WIKI_COMMIT_TIME -gt $DOCS_COMMIT_TIME ] && echo "Wiki is newerrrrrrr"
             [ "${DOCS_COMMIT_TIME}" -gt "${WIKI_COMMIT_TIME}" ] && echo "Docs is newer"
             [ "${WIKI_COMMIT_TIME}" -gt "${DOCS_COMMIT_TIME}" ] && echo "Wiki is newer"
             if [ "${DOCS_COMMIT_TIME}" -gt "${WIKI_COMMIT_TIME}" ]; then
