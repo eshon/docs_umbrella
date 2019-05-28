@@ -35,7 +35,7 @@ jobs:
           name: config global git user name
           command: 'git config --global user.name ${GH_NAME}'
       - run:
-          name: Get timestamps of this repo and submodule, check for diffs
+          name: Get timestamps of this repo and submodule, check for diffs, commit new to older
           command: |
             export DOCS_COMMIT_TIME=$(git show -s --format=%ct)
             export WIKI_COMMIT_TIME=$(git --git-dir testwikidocs/.git show -s --format=%ct)
@@ -70,7 +70,7 @@ jobs:
                 git fetch
                 git checkout master
                 git merge wiki_changes
-                git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/testwikidocs_sync.git master
+                git push -q origin master
             fi
             if [ "${DIFFTAG}" -eq "0" ]
             then
