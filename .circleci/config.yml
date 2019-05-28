@@ -71,5 +71,6 @@ jobs:
             if [ "${DIFFTAG}" -ne "0" ]
             then
               echo 'No diffs so nothing to update'
+            fi
 
                     
