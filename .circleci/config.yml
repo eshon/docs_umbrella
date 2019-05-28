@@ -28,7 +28,7 @@ jobs:
           command: 'git submodule update --init --recursive --remote'
       - run:
           name: Copy wiki over to docs - exclude images and .git file
-          command: 'rsync -av --progress testwikidocs docs --exclude images --exclude "*.git"'
+          command: 'rsync -av --progress --exclude images --exclude "*.git" testwikidocs/* docs/'
       - run:
           name: Copy wiki's images folder to docs/_images
           command: 'rsync -av --progress testwikidocs/images/* docs/_images/'
