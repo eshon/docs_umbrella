@@ -48,15 +48,15 @@ jobs:
                 ls -la docs
                 git add docs
                 git commit --allow-empty -m "Pushing from Wiki webhook via CI [skip ci]"
-                git pull origin master
-                git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/docs_umbrella.git master
+                git pull origin ${CIRCLE_BRANCH}
+                git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/docs_umbrella.git ${CIRCLE_BRANCH}
             fi
             if [ "${DOCS_COMMIT_TIME}" -gt "${WIKI_COMMIT_TIME}" ] && [ "${DIFFTAG}" -ne "0" ]
             then
                 echo 'Docs is newer so if different then copy to and update Wiki'
                 cd testwikidocs
                 git remote -v
-                git pull origin master
+                git pull origin ${CIRCLE_BRANCH}
                 git checkout -b wiki_changes
                 rsync -av --progress --exclude _images --exclude '*.git' --exclude '*.nojekyll' --exclude '*.html' --exclude '_*.md' ../docs/* .
                 rsync -av --progress ../docs/_images/* images/
@@ -65,9 +65,9 @@ jobs:
                 git status
                 git commit -m "Pushing from Docs repo to Wiki via CI [skip ci]"
                 git fetch
-                git checkout master
+                git checkout ${CIRCLE_BRANCH}
                 git merge wiki_changes
-                git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/testwikidocs_sync.git master
+                git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/testwikidocs_sync.git ${CIRCLE_BRANCH}
             fi
             if [ "${DIFFTAG}" -eq "0" ]
             then
