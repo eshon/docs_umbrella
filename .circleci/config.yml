@@ -72,7 +72,7 @@ jobs:
               git commit -m "Pushing from Docs repo to Wiki via CI"
               git checkout master
               git merge wiki_changes
-              git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/testwikidocs_sync.git master'
+              git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/testwikidocs_sync.git master
             fi
 
                     
