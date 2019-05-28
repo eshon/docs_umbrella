@@ -40,7 +40,6 @@ jobs:
             echo $WIKI_COMMIT_TIME
             echo $DOCS_COMMIT_TIME
             echo $DIFFTAG
-            diff -r -x '.*' -x '*.html' -x 'images' -x '_images' -x '_*.md' docs/ testwikidocs/
             if [ "${WIKI_COMMIT_TIME}" -gt "${DOCS_COMMIT_TIME}" ] && [ "${DIFFTAG}" -ne "0" ]
             then
                 echo 'Wiki is newer so if different then copy to and update Docs'
