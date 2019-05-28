@@ -64,8 +64,9 @@ jobs:
                 git checkout -b wiki_changes
                 rsync -av --progress --exclude _images --exclude '*.git' --exclude '*.nojekyll' --exclude '*.html' --exclude '_*.md' ../docs/* .
                 rsync -av --progress ../docs/_images/* images/
-                ls -la testwikidocs
+                ls -la .
                 git add .
+                git status
                 git commit -m "Pushing from Docs repo to Wiki via CI [skip ci]"
                 git checkout master
                 git merge wiki_changes
