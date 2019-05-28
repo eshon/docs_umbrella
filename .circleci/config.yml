@@ -54,7 +54,6 @@ jobs:
             if [ "${DOCS_COMMIT_TIME}" -gt "${WIKI_COMMIT_TIME}" ] && [ "${DIFFTAG}" -ne "0" ]
             then
                 echo 'Docs is newer so if different then copy to and update Wiki'
-                git submodule update --remote --merge
                 cd testwikidocs
                 git remote -v
                 git pull origin master
