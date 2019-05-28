@@ -25,66 +25,48 @@ jobs:
           name: 'Update the submodule'
           command: 'git submodule update --init --recursive --remote'
       - run:
-          name: Get timestamps of this repo and submodule
+          name: config global git credential helper
+          command: 'git config credential.helper "cache --timeout=120"'
+      - run:
+          name: config global git user email
+          command: 'git config --global user.email ${GH_EMAIL}'
+      - run:
+          name: config global git user name
+          command: 'git config --global user.name ${GH_NAME}'
+      - run:
+          name: Get timestamps of this repo and submodule, check for diffs
           command: |
             export DOCS_COMMIT_TIME=$(git show -s --format=%ct)
             export WIKI_COMMIT_TIME=$(git --git-dir testwikidocs/.git show -s --format=%ct)
+            export DIFFTAG=$(diff -r -x '.*' -x '*.html' -x 'images' -x '_images' -x '_*.md' docs/ testwikidocs/ | wc -l)
             echo $WIKI_COMMIT_TIME
             echo $DOCS_COMMIT_TIME
-            [ $DOCS_COMMIT_TIME -gt $WIKI_COMMIT_TIME ] && echo "Docs is newerrrrrr"
-            [ $WIKI_COMMIT_TIME -gt $DOCS_COMMIT_TIME ] && echo "Wiki is newerrrrrrr"
-            [ "${DOCS_COMMIT_TIME}" -gt "${WIKI_COMMIT_TIME}" ] && echo "Docs is newer"
-            [ "${WIKI_COMMIT_TIME}" -gt "${DOCS_COMMIT_TIME}" ] && echo "Wiki is newer"
-            if [ "${DOCS_COMMIT_TIME}" -gt "${WIKI_COMMIT_TIME}" ]; then
-                echo 'docs is newer so copy to wiki' 
-            fi
-      - run:
-          name: Copy wiki over to docs - exclude images and .git file
-          command: 'rsync -av --progress --exclude images --exclude "*.git" testwikidocs/* docs/'
-      - run:
-          name: Copy wiki's images folder to docs/_images
-          command: 'rsync -av --progress testwikidocs/images/* docs/_images/'
-      - run:
-          name: Show contents of docs
-          command: 'ls -la docs'
-      - run:
-          name: config credential helper
-          command: 'git config credential.helper "cache --timeout=120"'
-      - run:
-          name: config user email
-          command: 'git config --global user.email ${GH_EMAIL}'
-      - run:
-          name: config user name
-          command: 'git config --global user.name ${GH_NAME}'
-      - run:
-          name: add new files in docs/ directory
-          command: 'git add docs'
-      - run:
-          name: commit files
-          command: 'git commit --allow-empty -m "Pushing from Wiki webhook via CI [skip ci]"'
-      - run:
-          name: Update docs
-          command: 'git pull origin master'
-      - run:
-          name: push files quietly to avoid showing token in logs, might fail on merge conflict
-          command: 'git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/docs_umbrella.git master'
-      - run:
-          name: diff docs and submodule, if there are differences need to push to Wiki...
-          command: |
-            export DIFFTAG=$(diff -r -x '.*' -x '*.html' -x 'images' -x '_images' -x '_*.md' docs/ testwikidocs/ | wc -l)
             echo $DIFFTAG
-            if [ "${DIFFTAG}" -ne "0" ]; then
-              echo "Need to update Wiki"
-              cd testwikidocs
-              git pull origin master
-              git checkout -b wiki_changes
-              rsync -av --progress --exclude _images --exclude '*.git' --exclude '*.nojekyll' --exclude '*.html' --exclude '_*.md' ../docs/* .
-              rsync -av --progress ../docs/_images/* images/
-              git add .
-              git commit -m "Pushing from Docs repo to Wiki via CI [skip ci]"
-              git checkout master
-              git merge wiki_changes
-              git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/testwikidocs_sync.git master
+            if [ "${WIKI_COMMIT_TIME}" -gt "${DOCS_COMMIT_TIME}" ] && [ "${DIFFTAG}" -ne "0" ]
+            then
+                echo 'Wiki is newer so if different then copy to and update Docs'
+                rsync -av --progress --exclude images --exclude "*.git" testwikidocs/* docs/
+                rsync -av --progress testwikidocs/images/* docs/_images/
+                ls -la docs
+                git add docs
+                git commit --allow-empty -m "Pushing from Wiki webhook via CI [skip ci]"
+                git pull origin master
+                git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/docs_umbrella.git master
+            fi
+            if [ "${DOCS_COMMIT_TIME}" -gt "${WIKI_COMMIT_TIME}" ] && [ "${DIFFTAG}" -ne "0" ]
+            then
+                echo 'Docs is newer so if different then copy to and update Wiki'
+                cd testwikidocs
+                git pull origin master
+                git checkout -b wiki_changes
+                rsync -av --progress --exclude _images --exclude '*.git' --exclude '*.nojekyll' --exclude '*.html' --exclude '_*.md' ../docs/* .
+                rsync -av --progress ../docs/_images/* images/
+                ls -la testwikidocs
+                git add .
+                git commit -m "Pushing from Docs repo to Wiki via CI [skip ci]"
+                git checkout master
+                git merge wiki_changes
+                git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/testwikidocs_sync.git master
             fi
 
                     
