@@ -11,70 +11,64 @@
 <body>
   <div id="app"></div>
   <script src="//unpkg.com/docsify-edit-on-github/index.js"></script>
+  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <script>
+    // Custom renderer for Github Wiki image tags that
+    // extends renderer.image and renderer.paragraph
+    var custom_renderer = (function() {
+      // replace image dir with _image
+      var replace_imgdir = function replace_imgdir(_href) {
+          if (_href.indexOf('_images') === -1) {
+            return _href.replace('images', '_images');
+          }
+      };
+      // override image renderer
+      var renderer = new marked.Renderer();
+      const normalImageRenderer = renderer.image.bind(renderer);
+      renderer.image = (href, title, text) => {
+        href = replace_imgdir(href);
+        return normalImageRenderer(href, title, text);
+      };
+      // override paragraph renderer
+      const normalParaRenderer = renderer.paragraph.bind(renderer);
+      renderer.paragraph = (text) => {
+        if (text.startsWith('[[') && text.endsWith(']]')) {
+          // remove brackets and whitespace
+          var src_str = text.substring(2, text.indexOf("]]"));
+          src_str = src_str.replace(/\s/g,'');
 
+          // start building src url with or without alt val
+          var _href, alt_text = '', alt_start = src_str.indexOf("|alt=");
+          if (alt_start > -1) {
+            _href = src_str.substring(0, alt_start);
+            alt_text = src_str.substring(alt_start+5); // after '|alt='
+            _href = replace_imgdir(_href);
+          } else {
+            _href = replace_imgdir(src_str);
+          }
+          return normalImageRenderer(_href, alt_text, alt_text);
+
+        } else {
+          return normalParaRenderer(text);
+        }
+      };
+      return renderer;
+    })();
+
+  </script>
   <script>
     window.$docsify = {
       name: 'Docs Umbrella',
       repo: 'https://github.com/eshon/docs_umbrella',
       markdown: {
+        renderer: custom_renderer,
         gfm: true,
         tables: true,
-        renderer: {
-          paragraph: function(text) {
-            // Custom renderer for Github Wiki images markup:
-            // [[images/possum.jpg | alt=possum]]
-            if (text.startsWith('[[') && text.endsWith(']]')) {
-
-              // func to replace 'images' with '_images'
-              var replace_imgdir = function replace_imgdir(_href) {
-                  if (_href.indexOf('_images') === -1) {
-                    return _href.replace('images', '_images');
-                  }
-              };
-              // remove brackets and whitespace
-              var src_str = text.substring(2, text.indexOf("]]"));
-              src_str = src_str.replace(/\s/g,'');
-
-              // start building src url with or without alt val
-              var src_url, img_tag,
-                alt_start = src_str.indexOf("|alt=");
-
-              // parse alt tag if there is one
-              if (alt_start > -1) {
-                src_url = src_str.substring(0, alt_start);
-                alt_text = src_str.substring(alt_start+5); // after '|alt='
-                src_url = replace_imgdir(src_url);
-                img_tag = '<img src="' + src_url + '"';
-                img_tag += ' alt="' + alt_text + '"';
-              } else {
-                src_url = replace_imgdir(src_str);
-                img_tag = '<img src="' + src_url + '"';
-              }
-              img_tag += this.options.xhtml ? '/>' : '>';
-              return img_tag;
-
-            } else {
-              // normal paragraph rendering
-              return '<p>' + text + '</p>';
-            }
-          },
-          image: function(href, title, text) {
-            // func to replace 'images' with '_images'
-            var replace_imgdir = function replace_imgdir(_href) {
-                if (_href.indexOf('_images') === -1) {
-                  return _href.replace('images', '_images');
-                }
-            };
-            href = replace_imgdir(href);
-            console.log(href);
-            var out = '<img src="' + href + '" alt="' + text + '"';
-            if (title) {
-              out += ' title="' + title + '"';
-            }
-            out += this.options.xhtml ? '/>' : '>';
-            return out;
-          }
-        }
+        breaks: false,
+        pedantic: false,
+        sanitize: true,
+        smartLists: true,
+        smartypants: false
       },
       homepage: 'Home.md',
       loadSidebar: true,
@@ -83,6 +77,5 @@
       ]
     }
   </script>
-  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
 </body>
 </html>
