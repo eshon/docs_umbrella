@@ -31,10 +31,10 @@ jobs:
             export WIKI_COMMIT_TIME=$(git show -s --format=%ct)
             echo $WIKI_COMMIT_TIME
             echo $DOCS_COMMIT_TIME
+            [ $DOCS_COMMIT_TIME -gt $WIKI_COMMIT_TIME ] && echo "Docs is newer"
             [ "${DOCS_COMMIT_TIME}" -gt "${WIKI_COMMIT_TIME}" ] && echo "Docs is newer"
             [ "${WIKI_COMMIT_TIME}" -gt "${DOCS_COMMIT_TIME}" ] && echo "Wiki is newer"
-            if [ "${DOCS_COMMIT_TIME}" -gt "${WIKI_COMMIT_TIME}" ]
-            then
+            if [ "${DOCS_COMMIT_TIME}" -gt "${WIKI_COMMIT_TIME}" ]; then
                 echo 'docs is newer so copy to wiki' 
             fi
       - run:
