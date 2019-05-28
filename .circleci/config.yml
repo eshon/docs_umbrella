@@ -68,7 +68,7 @@ jobs:
                 git merge wiki_changes
                 git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/testwikidocs_sync.git master
             fi
-            if [ "${DIFFTAG}" -ne "0" ]
+            if [ "${DIFFTAG}" -eq "0" ]
             then
               echo 'No diffs so nothing to update'
             fi
