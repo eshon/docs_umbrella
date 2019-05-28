@@ -24,7 +24,7 @@ jobs:
       - checkout
       - run:
           name: 'Sync and update the git submodule'
-          command: 'git submodule sync && git submodule update --init'
+          command: 'git submodule sync && git submodule update --init --recursive --remote'
       - run:
           name: Configure Git user
           command: |
