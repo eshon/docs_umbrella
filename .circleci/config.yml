@@ -20,13 +20,10 @@ jobs:
       - run:
           name: Install docsify
           command: 'sudo npm i docsify-cli -g'
-      - checkout
-      - run:
-          name: 'Sync the submodule'
-          command: git submodule sync
-      - run:
-          name: 'Update the submodule'
-          command: 'git submodule update --init --recursive --remote'
+      - checkout:
+            post:
+            - git submodule sync
+            - git submodule update --init --recursive --remote
       - run:
           name: config global git credential helper
           command: 'git config credential.helper "cache --timeout=120"'
