@@ -3,14 +3,12 @@ jobs:
   build:
     docker:
       - image: circleci/node:latest 
-    # Triggers: Any commits to this repo will trigger this CI script and any edits to the
+    # Triggers: Updates to this repo will trigger this CI script and any edits to the
     # Github Wiki in the eshon/testwikisync_doc repo will trigger this via Github webhook.
     # Github Wiki Markdown files and image files (but not folder names) in submodule and docs should be identical
     #
     # Also see https://github.com/eshon/docs_umbrella/blob/master/docs/index.html for custom Docsify renderer
     # for Github Wiki markdown for images
-    #
-    # TODO - diff docs/*.md files and docs/_images/* files and copy updates to Wiki submodule repo
     #
     steps:
       - run:
@@ -27,12 +25,16 @@ jobs:
           name: 'Update the submodule'
           command: 'git submodule update --init --recursive --remote'
       - run:
-          name: show all available variables
+          name: Get timestamps of this repo and submodule
           command: |
-            echo $CIRCLE_SHA1
-            echo $CIRCLE_COMPARE_URL
-            echo $CIRCLE_BUILD_URL
-            echo $CIRCLE_BUILD_NUM
+            export DOCS_COMMIT_TIME=$(git show -s --format=%ct)
+            export WIKI_COMMIT_TIME=$(git show -s --format=%ct)
+            [ "$DOCS_COMMIT_TIME" -gt "$WIKI_COMMIT_TIME" ] && echo "Docs is newer"
+            [ "$WIKI_COMMIT_TIME" -gt "$DOCS_COMMIT_TIME" ] && echo "Wiki is newer"
+            if [ "$DOCS_COMMIT_TIME" -gt "$WIKI_COMMIT_TIME" ]
+            then
+                echo 'docs is newer so copy to wiki' 
+            fi
       - run:
           name: Copy wiki over to docs - exclude images and .git file
           command: 'rsync -av --progress --exclude images --exclude "*.git" testwikidocs/* docs/'
