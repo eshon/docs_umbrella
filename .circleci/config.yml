@@ -26,7 +26,7 @@ jobs:
       - run:
           name: 'Update the submodule'
           command: 'git submodule update --init --recursive --remote'
-       - run:
+      - run:
           name: show all available variables
           command: |
             echo $CIRCLE_SHA1
