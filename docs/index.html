@@ -11,6 +11,7 @@
 <body>
   <div id="app"></div>
   <script src="//unpkg.com/docsify-edit-on-github/index.js"></script>
+
   <script>
     window.$docsify = {
       name: 'Docs Umbrella',
@@ -20,50 +21,58 @@
         tables: true,
         renderer: {
           paragraph: function(text) {
-
             // Custom renderer for Github Wiki images markup:
             // [[images/possum.jpg | alt=possum]]
-
             if (text.startsWith('[[') && text.endsWith(']]')) {
-              // remove brackets
+
+              // func to replace 'images' with '_images'
+              var replace_imgdir = function replace_imgdir(_href) {
+                  if (_href.indexOf('_images') === -1) {
+                    return _href.replace('images', '_images');
+                  }
+              };
+              // remove brackets and whitespace
               var src_str = text.substring(2, text.indexOf("]]"));
-              // remove all whitespace
               src_str = src_str.replace(/\s/g,'');
 
               // start building src url with or without alt val
               var src_url, img_tag,
                 alt_start = src_str.indexOf("|alt=");
 
-              // replace 'images' with '_images'
-              function replace_imgdir (src_dir) {
-                  if (src_dir.indexOf('_images') < 0) {
-                    return src_dir.replace('images', '_images');
-                  }
-              }
-
+              // parse alt tag if there is one
               if (alt_start > -1) {
                 src_url = src_str.substring(0, alt_start);
-                alt_text = src_str.substring(alt_start+5);
-
+                alt_text = src_str.substring(alt_start+5); // after '|alt='
                 src_url = replace_imgdir(src_url);
-
                 img_tag = '<img src="' + src_url + '"';
                 img_tag += ' alt="' + alt_text + '"';
-
               } else {
-
                 src_url = replace_imgdir(src_str);
-
                 img_tag = '<img src="' + src_url + '"';
               }
               img_tag += this.options.xhtml ? '/>' : '>';
-
               return img_tag;
 
             } else {
               // normal paragraph rendering
               return '<p>' + text + '</p>';
             }
+          },
+          image: function(href, title, text) {
+            // func to replace 'images' with '_images'
+            var replace_imgdir = function replace_imgdir(_href) {
+                if (_href.indexOf('_images') === -1) {
+                  return _href.replace('images', '_images');
+                }
+            };
+            href = replace_imgdir(href);
+            console.log(href);
+            var out = '<img src="' + href + '" alt="' + text + '"';
+            if (title) {
+              out += ' title="' + title + '"';
+            }
+            out += this.options.xhtml ? '/>' : '>';
+            return out;
           }
         }
       },
