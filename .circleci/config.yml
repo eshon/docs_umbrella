@@ -2,14 +2,16 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:stretch 
-    # On Github Webhook for Wiki updates from eshon/testwikisync_doc repo, trigger a 
-    # git submodule update in this repo, copy files to docs/ folder and push to this repo
-    # so eshon.github.io/docs_umbrella Docsify can be rebuilt
-    # TODO - Edits from this repo trigger copy to testwikidocs/ repo and push back to eshon/testwikisync_doc 
+      - image: circleci/node:latest 
+    # Triggers: Any commits to this repo will trigger this CI script and any edits to the
+    # Github Wiki in the eshon/testwikisync_doc repo will trigger this via Github webhook.
+    # Github Wiki Markdown files and image files (but not folder names) in submodule and docs should be identical
     #
     # Also see https://github.com/eshon/docs_umbrella/blob/master/docs/index.html for custom Docsify renderer
     # for Github Wiki markdown for images
+    #
+    # TODO - diff docs/*.md files and docs/_images/* files and copy updates to Wiki submodule repo
+    #
     steps:
       - run:
           name: Install rsync
@@ -47,8 +49,17 @@ jobs:
           command: 'git add docs'
       - run:
           name: commit files
-          command: 'git commit --allow-empty -m "Pushing from CI"'
+          command: 'git commit --allow-empty -m "Pushing from Wiki webhook CI"'
       - run:
-          name: push files quietly to avoid showing token in logs
+          name: Update docs
+          command: 'git pull origin master'
+      - run:
+          name: push files quietly to avoid showing token in logs, might fail on merge conflict
           command: 'git push -q https://${DOCS_GH_TOKEN}@github.com/eshon/docs_umbrella.git master'
+      - run:
+          name: diff docs and submodule, if there are differences need to push to Wiki...
+          command: |
+            export DIFFTAG=$(eval diff -r -x '.*' -x '*.html' -x 'images' -x '_images' -x '_*.md' docs/ testwikidocs/ | wc -l)
+            echo $DIFFTAG
+
                     
