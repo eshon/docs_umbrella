@@ -3,24 +3,26 @@ jobs:
   build:
     docker:
       - image: circleci/node:latest 
-    # Triggers: Updates to this repo will trigger this CI script and any edits to the
-    # Github Wiki in eshon/testwikisync_doc will trigger via Github webhook.
-    # Notes:
-    #  Github Wiki Markdown files and image files (but not folder names) in submodule and this repo should be identical
-    #  Assumes ${GH_EMAIL}, ${GH_NAME}, ${DOCS_GH_TOKEN} are set in CI environment
+    # This CI script syncs changes between a Github Wiki and a Docs repo (for a future Docs website portal)
+    # Docs repo should look like:
+    # ${REPO}/
+    #     ${DOCS_DIR}/ - contains Github-flavored *.md files and an '_images' directory
+    #     ${SUBMODULE_DIR} - that points to a ${SUBMODULE}.wiki.git with an 'images' directory
     #
-    # Also see https://github.com/eshon/docs_umbrella/blob/master/docs/index.html for custom Docsify renderer
-    # for Github Wiki markdown for images
+    # Triggers: 
+    #  - Updates to master of this repo will trigger this CI script 
+    #  - Github Wiki repo has a Webhook just for Wiki updates that can be sent to CircleCI's API
+    # 
+    # Notes:
+    #  - *.md files and image files should be identical (but not their folders)
+    #  - Assumes ${GH_EMAIL}, ${GH_NAME}, ${DOCS_GH_TOKEN} are set in CircleCI environment
+    #  - This will not test out PRs to the Docs repo - they may get out of sync with master if Wiki's updated 
+    #
+    # Also see https://github.com/eshon/docs_umbrella/blob/master/docs/index.html for custom Docsify 
+    # renderer for Github Wiki-flavored markdown's special image tags
     #
     working_directory: ~/docsrepo
     steps:
-      - run:
-          name: Environment Variables check
-          command: |
-            echo "CIRCLE_PULL_REQUESTS = ${CIRCLE_PULL_REQUESTS}"
-            echo "CIRCLE_PULL_REQUEST = ${CIRCLE_PULL_REQUEST}"
-            echo "CI_PULL_REQUESTS = ${CI_PULL_REQUESTS}"
-            echo "CI_PULL_REQUEST = ${CI_PULL_REQUEST}"
       - run:
           name: Install rsync
           command: 'sudo apt-get update && sudo apt-get -y install rsync'
