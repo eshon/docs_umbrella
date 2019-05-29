@@ -14,6 +14,12 @@ jobs:
     #
     working_directory: ~/docsrepo
     steps:
+      - run: Environment Variables
+        command: |
+          echo "CIRCLE_PULL_REQUESTS = ${CIRCLE_PULL_REQUESTS}"
+          echo "CIRCLE_PULL_REQUEST = ${CIRCLE_PULL_REQUEST}"
+          echo "CI_PULL_REQUESTS = ${CI_PULL_REQUESTS}"
+          echo "CI_PULL_REQUEST = ${CI_PULL_REQUEST}"
       - run:
           name: Install rsync
           command: 'sudo apt-get update && sudo apt-get -y install rsync'
